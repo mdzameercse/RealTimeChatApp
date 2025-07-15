@@ -1,0 +1,7 @@
+[build]
+  base = "react-chat-app"
+  publish = "react-chat-app/build"
+  command = "npm run build"
+
+[build.environment]
+  NODE_VERSION = "18"
