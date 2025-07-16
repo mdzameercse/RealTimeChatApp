@@ -25,7 +25,15 @@ export default function ChatPage() {
   const [status, setStatus] = useState(null);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
-
+   const handleAuthError = (err) => {
+    if (err.response && err.response.status === 401) {
+      localStorage.removeItem("currentUser");
+      sessionStorage.removeItem("selectedFriend");
+      navigate("/login");
+    } else {
+      console.error("Error:", err);
+    }
+  };
 // ✅ Filtered friends list
 const filteredFriends = friends.filter((f) =>
   f.friend?.username?.toLowerCase().includes(searchTerm.toLowerCase())
@@ -134,15 +142,7 @@ const filteredFriends = friends.filter((f) =>
   }, [messages]);
 
   // ✅ Error handler for auth
-  const handleAuthError = (err) => {
-    if (err.response && err.response.status === 401) {
-      localStorage.removeItem("currentUser");
-      sessionStorage.removeItem("selectedFriend");
-      navigate("/login");
-    } else {
-      console.error("Error:", err);
-    }
-  };
+
 
   const handleSelectFriend = (friend) => {
     setSelectedFriend(friend);
