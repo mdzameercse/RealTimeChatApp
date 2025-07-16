@@ -4,6 +4,15 @@ import { Client } from "@stomp/stompjs";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
 
+  const handleAuthError = useCallback((err) => {
+    if (err.response && err.response.status === 401) {
+      localStorage.removeItem("currentUser");
+      sessionStorage.removeItem("selectedFriend");
+      navigate("/login");
+    } else {
+      console.error("Error:", err);
+    }
+  }, [navigate]);
 export default function ChatPage() {
   const [friends, setFriends] = useState([]);
   const [currentUser, setCurrentUser] = useState(
