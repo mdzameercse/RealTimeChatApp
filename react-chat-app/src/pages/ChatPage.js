@@ -43,7 +43,7 @@ const filteredFriends = friends.filter((f) =>
       const interval = setInterval(fetchStatus, 10000);
       return () => clearInterval(interval);
     }
-  }, [selectedFriend]);
+  }, [selectedFriend,handleAuthError]);
 
   // ✅ Detect screen size
   useEffect(() => {
@@ -62,7 +62,7 @@ const filteredFriends = friends.filter((f) =>
         })
         .catch((err) => handleAuthError(err));
     }
-  }, [currentUser]);
+  }, [currentUser,handleAuthError]);
 
   // ✅ WebSocket connection
   useEffect(() => {
@@ -96,11 +96,11 @@ const filteredFriends = friends.filter((f) =>
   }, [currentUser, selectedFriend]);
 
   // ✅ Fetch friends list
-  useEffect(() => {
-    api.get("/friend/showall")
-      .then((res) => setFriends(Array.isArray(res.data) ? res.data : []))
-      .catch((err) => handleAuthError(err));
-  }, []);
+ useEffect(() => {
+  api.get("/friend/showall")
+    .then((res) => setFriends(Array.isArray(res.data) ? res.data : []))
+    .catch((err) => handleAuthError(err));
+}, [handleAuthError]);
 
   // ✅ Fetch all users when Add Friend modal opens
   useEffect(() => {
@@ -112,7 +112,7 @@ const filteredFriends = friends.filter((f) =>
         setAllUsers([]);  // ✅ Prevent map error
       });
     }
-  }, [showAddFriend]);
+  }, [showAddFriend,handleAuthError]);
 
   // ✅ Fetch messages for selected friend
   useEffect(() => {
@@ -121,7 +121,7 @@ const filteredFriends = friends.filter((f) =>
         .then((res) => setMessages(res.data))
         .catch((err) => handleAuthError(err));
     }
-  }, [selectedFriend]);
+  }, [selectedFriend,handleAuthError]);
 
   // ✅ Auto-scroll
   useEffect(() => {
